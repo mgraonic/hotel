@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require 'pry'
 
 describe "Hotel class" do
   describe "Initializer" do
@@ -7,31 +8,91 @@ describe "Hotel class" do
       hotel.must_be_kind_of Hotel
     end
 
-    it "contains an array of room numbers" do
-      hotel = Hotel.new
-      hotel.rooms.must_be_kind_of Array
-      hotel.rooms.first.must_be_kind_of Integer
-    end
-
-    it "contains an empty array reservations" do
+    it "contains an empty array of reservations" do
       hotel = Hotel.new
       hotel.reservations.must_equal []
     end
 
+    it "access the list of all of the rooms in the hotel" do
+      rooms = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      hotel = Hotel.new
+      hotel.rooms.must_equal rooms
+    end
 
+  end
+
+  describe "check_date method" do
+    it "raises an argument error for invalid dates" do
+      end_date = "2018-3-6"
+      start_date = "2018-3-10"
+      start_date_2 = "2018-3-6"
+
+      hotel_start_before_end = Hotel.new
+      hotel_start_end_same = Hotel.new
+
+      proc{ hotel_start_before_end.reserve(start_date, end_date) }.must_raise StandardError
+      proc{ hotel_start_end_same.reserve(start_date_2, end_date) }.must_raise StandardError
+    end
   end
 
   describe "Reserve method" do
+    it "can reserve a room for a given date range" do
+      start_date = "2018-3-6"
+      end_date = "2018-3-10"
+      start_date2 = "2018-4-6"
+      end_date2 = "2018-4-10"
 
+      hotel = Hotel.new
+
+      reservation1 = hotel.reserve(start_date, end_date)
+      reservation2 = hotel.reserve(start_date2, end_date2)
+
+      reservation1.must_be_kind_of Reservation
+      hotel.reservations.length.must_equal 2
+      hotel.reservations.first.must_equal reservation1
+      hotel.reservations.last.must_equal reservation2
+
+    end
   end
 
   describe "Available_rooms method" do
-
+    it "returns an array of available rooms for given date range" do
+      start_date = "2018-3-6"
+      end_date = "2018-3-10"
+      hotel = Hotel.new
+      reservation1 = hotel.reserve(start_date, end_date)
+      rooms = hotel.available_rooms(start_date, end_date)
+      binding.pry
+      rooms.must_be_kind_of Array
+      rooms.sample.must_be_kind_of Integer
+      rooms.length.must_equal 19
+    end
   end
 
 
   describe "Get_reservations method" do
+    it "provides a list of reservations for a given date" do
+      start_date = "2018-3-6"
+      end_date = "2018-3-10"
+      start_date2 = "2018-3-6"
+      end_date2 = "2018-3-29"
+      date = "2018-3-8"
 
+      hotel = Hotel.new
+
+      reservation1 = hotel.reserve(start_date, end_date)
+      reservation2 = hotel.reserve(start_date2, end_date2)
+
+      list = hotel.get_reservations(date)
+
+      list.must_be_kind_of Array
+      list.length.must_equal 2
+      list.first.must_equal reservation1
+      list.last.must_equal reservation2
+    end
+    it "text" do
+
+    end
   end
 
 end
