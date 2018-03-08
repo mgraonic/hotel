@@ -59,13 +59,18 @@ describe "Hotel class" do
     it "returns an array of available rooms for given date range" do
       start_date = "2018-3-6"
       end_date = "2018-3-10"
+      start_date2 = "2018-3-9"
+      end_date2 = "2018-3-29"
       hotel = Hotel.new
       reservation1 = hotel.reserve(start_date, end_date)
+      reservation2 = hotel.reserve(start_date2, end_date2)
+
+      # checking availability for dates that are reserved
       rooms = hotel.available_rooms(start_date, end_date)
-      binding.pry
+
       rooms.must_be_kind_of Array
       rooms.sample.must_be_kind_of Integer
-      rooms.length.must_equal 19
+      rooms.length.must_equal 18
     end
   end
 

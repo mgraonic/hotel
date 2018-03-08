@@ -2,10 +2,10 @@ require_relative 'spec_helper'
 
 describe "Describe Reservation Class" do
   describe "initializer" do
-    
+
     it "is an instance of Reservation" do
-      start_date = "2018-3-6"
-      end_date = "2018-3-10"
+      start_date = Date.parse("2018-3-6")
+      end_date = Date.parse("2018-3-10")
 
       reservation = Reservation.new(5, start_date, end_date)
 
@@ -30,8 +30,8 @@ describe "Describe Reservation Class" do
 
   describe "cost method" do
     it "calculates cost for length of stay" do
-      start_date = "2018-3-6"
-      end_date = "2018-3-10"
+      start_date = Date.parse("2018-3-6")
+      end_date = Date.parse("2018-3-10")
 
       reservation = Reservation.new(5, start_date, end_date)
 

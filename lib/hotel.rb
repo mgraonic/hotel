@@ -14,50 +14,42 @@ class Hotel
     @reservations = []
   end
 
-  # def reservation_exists?(room)
-  #   @reservations.
-  #
-  # end
+  def available_rooms(start_date, end_date)
+    start_date, end_date = check_date(start_date, end_date)
+    unavailable_rooms = []
+    available_rooms = ROOMS
 
-  def available_rooms(start_date, end_date) # all unreserved rooms
-    # iterates over rooms array
-    available_rooms = []
-    puts "line 25"
     @rooms.each do |room|
-      # refactor to use map method
-      puts "line 28"
-      @reservations.each do |reservation|
-        puts "line30"
-        if reservation.free?(start_date, end_date)
-          puts "executed line 29 - yes overlap"
+      room_id = room
+      res_with_room_id = @reservations.select {|reservation| reservation.room == room_id}
+
+      res_with_room_id.each do |reservation|
+        if reservation.overlap?(start_date, end_date)
+          unavailable_rooms << reservation.room
         else
-          available_rooms << reservation.room
-          puts "executed line 35 - no overlap"
         end
       end
-
     end
-    return available_rooms
-    # for each room:
-    # checks if a reservation exists with that room number
-    # returns list of available rooms
+    return available_rooms - unavailable_rooms
   end
 
   def check_date(start_date, end_date)
-    start_date = Date.parse(start_date)
-    end_date = Date.parse(end_date)
+    start_date = Date.parse(start_date) unless start_date.is_a?(Date)
+    end_date = Date.parse(end_date) unless end_date.is_a?(Date)
     if end_date == start_date || end_date < start_date
       raise StandardError.new("End date cannot be equal to or come before the start date")
     end
+    return start_date, end_date
   end
 
-  def reserve(start_date, end_date)
-    # parses dates into Time objects and checks validity
-    check_date(start_date, end_date)
-    room = ROOMS.sample
-    reservation = Reservation.new(room, start_date, end_date)
-    @reservations << reservation
 
+  def reserve(start_date, end_date)
+    start_date, end_date = check_date(start_date, end_date)
+
+    rooms = self.available_rooms(start_date, end_date)
+    available_room = rooms.sample
+    reservation = Reservation.new(available_room, start_date, end_date)
+    @reservations << reservation
 
     return reservation
     # calls available_rooms method
@@ -71,7 +63,7 @@ class Hotel
 
   def get_reservations(date)
     reservation_list = []
-    date = Date.parse(date)
+    date = Date.parse(date) unless date.is_a?(Date)
     @reservations.each do |reservation|
       if date.between?(reservation.start_date, reservation.end_date)
         reservation_list << reservation
