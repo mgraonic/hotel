@@ -12,14 +12,24 @@ class Hotel
   def initialize
     @rooms = ROOMS
     @reservations = []
+    @blocks = []
   end
 
 
-  def block(rooms, start_date, end_date)
-    rooms.each do
-      reserve(room, start_date, end_date)
-    end
-  end
+  # def reserve_block(rooms_array, start_date, end_date)
+  #   start_date, end_date = check_date(start_date, end_date)
+  #   rooms_array.each do |room|
+  #     if available_rooms.include?(room)
+  #       blocked_room = Block.new(room, start_date, end_date)
+  #       @blocked << blocked_room
+  #     end
+  #   end
+  #   available_rooms = self.available_rooms(start_date, end_date)
+  # end
+
+  # def reserve_block
+  #
+  # end
 
   def available_rooms(start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
@@ -32,6 +42,7 @@ class Hotel
 
       res_with_room_id.each do |reservation|
         if reservation.overlap?(start_date, end_date)
+          # && if reservation.blocked?
           unavailable_rooms << reservation.room
         else
         end

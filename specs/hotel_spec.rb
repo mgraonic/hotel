@@ -34,6 +34,21 @@ describe "Hotel class" do
     end
   end
 
+  describe "reserve_block method" do
+    it "create a block of rooms" do
+
+    end
+
+    it "check whether block has rooms available" do
+
+    end
+    it "reserve a room from within a block of rooms" do
+
+    end
+  end
+
+
+
   describe "Reserve method" do
     it "can reserve a room for a given date range" do
       start_date = "2018-3-6"
