@@ -13,12 +13,11 @@ describe "Hotel class" do
       hotel.reservations.must_equal []
     end
 
-    it "access the list of all of the rooms in the hotel" do
+    it "access the list of all rooms in the hotel" do
       rooms = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
       hotel = Hotel.new
       hotel.rooms.must_equal rooms
     end
-
   end
 
   describe "check_date method" do
@@ -51,7 +50,17 @@ describe "Hotel class" do
       hotel.reservations.length.must_equal 2
       hotel.reservations.first.must_equal reservation1
       hotel.reservations.last.must_equal reservation2
+    end
 
+    it "raises an argument error for invalid dates" do
+      end_date = "2018-3-6"
+      start_date = "2018-3-10"
+      start_date_2 = "2018-3-6"
+
+      hotel = Hotel.new
+
+      proc{ hotel.reserve(start_date, end_date) }.must_raise StandardError
+      proc{ hotel.reserve(start_date2, end_date) }.must_raise StandardError
     end
   end
 
@@ -65,12 +74,38 @@ describe "Hotel class" do
       reservation1 = hotel.reserve(start_date, end_date)
       reservation2 = hotel.reserve(start_date2, end_date2)
 
-      # checking availability for dates that are reserved
       rooms = hotel.available_rooms(start_date, end_date)
 
       rooms.must_be_kind_of Array
       rooms.sample.must_be_kind_of Integer
       rooms.length.must_equal 18
+    end
+
+    it "returns an empty array if all rooms are booked" do
+      start_date = Date.parse("2018-3-6")
+      end_date = Date.parse("2018-3-7")
+      start_date2 = Date.parse("2018-10-1")
+      end_date2 = Date.parse("2018-10-2")
+      hotel = Hotel.new
+
+      20.times do
+        hotel.reserve(start_date, end_date)
+        start_date += 1
+        end_date += 1
+      end
+
+      hotel.available_rooms(start_date2, end_date2).must_equal []
+    end
+
+    it "raises a StandardError for invalid dates" do
+      end_date = "2018-3-6"
+      start_date = "2018-3-10"
+      start_date_2 = "2018-3-6"
+
+      hotel = Hotel.new
+
+      proc{ hotel.available_rooms(start_date, end_date) }.must_raise StandardError
+      proc{ hotel.available_rooms(start_date2, end_date) }.must_raise StandardError
     end
   end
 

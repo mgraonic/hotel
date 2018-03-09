@@ -20,7 +20,7 @@ describe "Describe Reservation Class" do
       start_date = "2018-3-10"
       start_date_2 = "2018-3-6"
 
-      start_before_end = Reservation.new(5, start_date, end_date)
+      end_before_start = Reservation.new(5, start_date, end_date)
       start_same_as_end = Reservation.new(5, start_date_2, end_date)
 
       proc{ start_before_end.check_date }.must_raise StandardError
@@ -32,11 +32,15 @@ describe "Describe Reservation Class" do
     it "calculates cost for length of stay" do
       start_date = Date.parse("2018-3-6")
       end_date = Date.parse("2018-3-10")
-
       reservation = Reservation.new(5, start_date, end_date)
-
       reservation.cost.must_equal 800
     end
-  end
 
+    it "does not charge for last day" do
+      start_date = Date.parse("2018-3-6")
+      end_date = Date.parse("2018-3-7")
+      reservation = Reservation.new(5, start_date, end_date)
+      reservation.cost.must_equal 200
+    end
+  end
 end

@@ -16,6 +16,7 @@ class Hotel
 
   def available_rooms(start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
+
     unavailable_rooms = []
     available_rooms = ROOMS
 
@@ -30,7 +31,10 @@ class Hotel
         end
       end
     end
-    return available_rooms - unavailable_rooms
+    rooms = available_rooms - unavailable_rooms
+    # if rooms.empty?
+    #   raise StandardError.new("There are no rooms available")
+    # end
   end
 
   def check_date(start_date, end_date)

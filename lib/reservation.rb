@@ -2,7 +2,6 @@ require 'time'
 require 'date'
 require 'pry'
 
-
 class Reservation
   attr_reader :room, :start_date, :end_date
   COST = 200
@@ -16,23 +15,12 @@ class Reservation
     return self.start_date <= end_date || self.end_date >= start_date
   end
 
-  def length_of_stay #passed in as string
+  def length_of_stay 
     length_of_stay = @end_date - @start_date
     days = length_of_stay.to_i
   end
 
-
-
   def cost
     cost = COST * length_of_stay
-    # takes in room id
-    # computes number of nights
-    # based on date range (-1 for checkout day)
-    # computes rate * nights
-    # returns cost as integer
   end
-
 end
-
-
-# reservation = HotelApp::Reservation.new(8,"2018-3-6","2018-3-10")
