@@ -1,7 +1,7 @@
 require 'time'
 require 'date'
 require_relative 'reservation'
-require 'pry'
+
 
 class Hotel
   attr_reader :rooms, :reservations
@@ -14,11 +14,17 @@ class Hotel
     @reservations = []
   end
 
+
+  def block(rooms, start_date, end_date)
+    rooms.each do
+      reserve(room, start_date, end_date)
+    end
+  end
+
   def available_rooms(start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
 
     unavailable_rooms = []
-    available_rooms = ROOMS
 
     @rooms.each do |room|
       room_id = room
@@ -31,10 +37,8 @@ class Hotel
         end
       end
     end
-    rooms = available_rooms - unavailable_rooms
-    # if rooms.empty?
-    #   raise StandardError.new("There are no rooms available")
-    # end
+    available_rooms = @rooms - unavailable_rooms
+    # minus blocked room array?
   end
 
   def check_date(start_date, end_date)
@@ -47,22 +51,17 @@ class Hotel
   end
 
 
-  def reserve(start_date, end_date)
+  def reserve(room, start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
-
     rooms = self.available_rooms(start_date, end_date)
-    available_room = rooms.sample
-    reservation = Reservation.new(available_room, start_date, end_date)
-    @reservations << reservation
 
-    return reservation
-    # calls available_rooms method
-    # if list of available rooms is empty?
-    # **raises an exception**
-    # ELSE:
-    # uses first available room in array to
-    # create instance of Reservation
-    # reservations << Reservation instance
+    if rooms.include?(room)
+      reservation = Reservation.new(room, start_date, end_date)
+      @reservations << reservation
+      return reservation
+    else
+      raise Exception.new("Your desired room is not available")
+    end
   end
 
   def get_reservations(date)
@@ -75,5 +74,4 @@ class Hotel
     end
     return reservation_list
   end
-
 end

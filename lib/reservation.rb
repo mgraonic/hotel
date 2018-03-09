@@ -1,6 +1,6 @@
 require 'time'
 require 'date'
-require 'pry'
+
 
 class Reservation
   attr_reader :room, :start_date, :end_date
@@ -15,7 +15,7 @@ class Reservation
     return self.start_date <= end_date || self.end_date >= start_date
   end
 
-  def length_of_stay 
+  def length_of_stay
     length_of_stay = @end_date - @start_date
     days = length_of_stay.to_i
   end

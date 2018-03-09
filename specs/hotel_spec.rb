@@ -43,8 +43,8 @@ describe "Hotel class" do
 
       hotel = Hotel.new
 
-      reservation1 = hotel.reserve(start_date, end_date)
-      reservation2 = hotel.reserve(start_date2, end_date2)
+      reservation1 = hotel.reserve(1, start_date, end_date)
+      reservation2 = hotel.reserve(2, start_date2, end_date2)
 
       reservation1.must_be_kind_of Reservation
       hotel.reservations.length.must_equal 2
@@ -62,6 +62,20 @@ describe "Hotel class" do
       proc{ hotel.reserve(start_date, end_date) }.must_raise StandardError
       proc{ hotel.reserve(start_date2, end_date) }.must_raise StandardError
     end
+    it "raises an exception when asked to reserve unavailable room" do
+      start_date = "2018-3-6"
+      end_date = "2018-3-10"
+      start_date2 = "2018-4-6"
+      end_date2 = "2018-4-10"
+      start_date3 = "2018-4-7"
+      end_date3 = "2018-4-9"
+
+      hotel = Hotel.new
+      reservation1 = hotel.reserve(1, start_date, end_date)
+      reservation2 = hotel.reserve(2, start_date2, end_date2)
+
+      proc {hotel.reserve(1, start_date3, end_date3)}.must_raise Exception
+    end
   end
 
   describe "Available_rooms method" do
@@ -71,8 +85,8 @@ describe "Hotel class" do
       start_date2 = "2018-3-9"
       end_date2 = "2018-3-29"
       hotel = Hotel.new
-      reservation1 = hotel.reserve(start_date, end_date)
-      reservation2 = hotel.reserve(start_date2, end_date2)
+      reservation1 = hotel.reserve(1, start_date, end_date)
+      reservation2 = hotel.reserve(2, start_date2, end_date2)
 
       rooms = hotel.available_rooms(start_date, end_date)
 
@@ -86,10 +100,12 @@ describe "Hotel class" do
       end_date = Date.parse("2018-3-7")
       start_date2 = Date.parse("2018-10-1")
       end_date2 = Date.parse("2018-10-2")
+      room = 1
       hotel = Hotel.new
 
       20.times do
-        hotel.reserve(start_date, end_date)
+        hotel.reserve(room, start_date, end_date)
+        room += 1
         start_date += 1
         end_date += 1
       end
@@ -116,12 +132,15 @@ describe "Hotel class" do
       end_date = "2018-3-10"
       start_date2 = "2018-3-6"
       end_date2 = "2018-3-29"
+      start_date3 = "2018-4-7"
+      end_date3 = "2018-4-9"
       date = "2018-3-8"
 
       hotel = Hotel.new
 
-      reservation1 = hotel.reserve(start_date, end_date)
-      reservation2 = hotel.reserve(start_date2, end_date2)
+      reservation1 = hotel.reserve(15, start_date, end_date)
+      reservation2 = hotel.reserve(16, start_date2, end_date2)
+      reservation3 = hotel.reserve(1, start_date3, end_date3)
 
       list = hotel.get_reservations(date)
 
@@ -129,6 +148,7 @@ describe "Hotel class" do
       list.length.must_equal 2
       list.first.must_equal reservation1
       list.last.must_equal reservation2
+      list.include?(reservation3).must_equal false
     end
     it "text" do
 
