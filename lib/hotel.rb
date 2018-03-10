@@ -47,7 +47,8 @@ end
       res_with_room_id = @reservations.select {|reservation| reservation.room == room_id}
 
       res_with_room_id.each do |reservation|
-        if reservation.overlap?(start_date, end_date) && reservation.blocked?(start_date, end_date)
+        if reservation.overlap?(start_date, end_date)
+          # && reservation.blocked?(start_date, end_date)
           unavailable_rooms << reservation.room
           break
           # break out of loop once ONE overlap

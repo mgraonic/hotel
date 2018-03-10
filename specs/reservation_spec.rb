@@ -51,9 +51,12 @@ describe "Describe Reservation Class" do
       end_date6 = Date.parse("2018-1-8")
 
       start_date7 = Date.parse("2017-12-25")
-      end_date7 = Date.parse("2018-1-15")
+      end_date7 = Date.parse("2017-12-29")
 
-      reservation = Reservation.new(1, existing_start_date, existing_end_date)
+      start_date8 = Date.parse("2018-1-11")
+      end_date8 = Date.parse("2018-1-15")
+
+      reservation = Reservation.new(1, start_date: existing_start_date, end_date: existing_end_date)
 
       reservation.overlap?(start_date1, end_date1).must_equal true
       reservation.overlap?(start_date2, end_date2).must_equal true
@@ -61,7 +64,8 @@ describe "Describe Reservation Class" do
       reservation.overlap?(start_date4, end_date4).must_equal true
       reservation.overlap?(start_date5, end_date5).must_equal true
       reservation.overlap?(start_date6, end_date6).must_equal true
-      reservation.overlap?(start_date7, end_date7).must_equal true
+      reservation.overlap?(start_date7, end_date7).must_equal false
+      reservation.overlap?(start_date8, end_date8).must_equal false
 
     end
   end
