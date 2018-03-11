@@ -66,7 +66,6 @@ describe "Describe Reservation Class" do
       reservation.overlap?(start_date6, end_date6).must_equal true
       reservation.overlap?(start_date7, end_date7).must_equal false
       reservation.overlap?(start_date8, end_date8).must_equal false
-
     end
   end
 

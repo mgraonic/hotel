@@ -15,30 +15,33 @@ class Hotel
     @blocks = []
   end
 
-def block_rooms(start_date, end_date)
-  start_date, end_date = check_date(start_date, end_date)
-  rooms = self.available_rooms(start_date, end_date)
+  def reserve_block(block_id, rooms_array, start_date, end_date)
+    start_date, end_date = check_date(start_date, end_date)
+    # if doesn't have reservation, go ahead
+    # ELSE raise exception??
+    available_rooms = available_rooms(start_date, end_date)
 
-reservation = ()
+    available_for_block = []
 
+    rooms_array.each do |room|
+      if available_rooms.include?(room)
+        available_for_block << room
+      end
+    end
 
-
-end
-  # def reserve_block(rooms_array, start_date, end_date)
-  #   start_date, end_date = check_date(start_date, end_date)
-  #   rooms_array.each do |room|
-  #     if available_rooms.include?(room)
-  #       blocked_room = Block.new(room, start_date, end_date)
-  #       @blocked << blocked_room
-  #     end
-  #   end
-  #   available_rooms = self.available_rooms(start_date, end_date)
-  # end
+    block = Block.new(block_id, available_for_block, start_date, end_date)
+    @blocks << block
+  end
 
   def available_rooms(start_date, end_date)
+    rooms = ROOMS
+    return rooms - self.reserved_rooms(start_date, end_date)
+  end
+
+  def reserved_rooms(start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
 
-    unavailable_rooms = []
+    reserved_rooms = []
 
     @rooms.each do |room|
       room_id = room
@@ -48,17 +51,14 @@ end
 
       res_with_room_id.each do |reservation|
         if reservation.overlap?(start_date, end_date)
-          #&& reservation.blocked?(start_date, end_date)
-          unavailable_rooms << reservation.room
+          reserved_rooms << reservation.room
           break
-          # break out of loop once ONE overlap
-          # is found
+          # break out of loop once ONE overlap is found
         else
         end
       end
     end
-    available_rooms = @rooms - unavailable_rooms
-    # minus blocked room array?
+    reserved_rooms
   end
 
   def check_date(start_date, end_date)
@@ -73,9 +73,11 @@ end
 
   def reserve(room, start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
-    rooms = self.available_rooms(start_date, end_date)
+    # rooms = self.available_rooms(start_date, end_date)
+    all_rooms = ROOMS
+    available_rooms = available_rooms(start_date, end_date)
 
-    if rooms.include?(room)
+    if available_rooms.include?(room)
       reservation = Reservation.new(room, start_date, end_date)
       @reservations << reservation
       return reservation
@@ -94,4 +96,5 @@ end
     end
     return reservation_list
   end
+
 end

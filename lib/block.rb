@@ -4,14 +4,13 @@ require_relative 'reservation'
 
 
 class Block < Reservation
-  attr_reader :rooms, :start_date, :end_date
+  attr_reader :block_id, :rooms, :start_date, :end_date
   COST = 100
 
-  def initialize(rooms, block_id, start_date, end_date)
-    @room = room
+  def initialize(block_id, rooms, start_date, end_date)
+    super(start_date, end_date)
     @block_id = block_id
-    @start_date = start_date
-    @end_date = end_date
+    @rooms = rooms
   end
 
   def overlap?(start_date, end_date)
