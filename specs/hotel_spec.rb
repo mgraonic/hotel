@@ -36,7 +36,15 @@ describe "Hotel class" do
 
   describe "reserve_block method" do
     it "create a block of rooms" do
+      start_date = "2018-1-1"
+      end_date = "2018-1-10"
+      rooms = [1, 2, 3, 5, 8]
+      hotel = Hotel.new
 
+      hotel.reserve_block(rooms, start_date, end_date)
+
+      hotel.blocked_rooms.length.must_equal 5
+      hotel.blocked_rooms.first.start_date.must_be_kind_of Date
     end
 
     it "check whether block has rooms available" do
@@ -78,18 +86,19 @@ describe "Hotel class" do
       proc{ hotel.reserve(start_date2, end_date) }.must_raise StandardError
     end
     it "raises an exception when asked to reserve unavailable room" do
-      start_date = "2018-3-6"
-      end_date = "2018-3-10"
-      start_date2 = "2018-4-6"
-      end_date2 = "2018-4-10"
-      start_date3 = "2018-4-7"
-      end_date3 = "2018-4-9"
-
+      start_date = Date.parse("2018-1-1")
+      end_date = Date.parse("2018-1-10")
+      start_date2 = Date.parse("2018-1-1")
+      end_date2 = Date.parse("2018-1-10")
+      room = 1
       hotel = Hotel.new
-      reservation1 = hotel.reserve(1, start_date, end_date)
-      reservation2 = hotel.reserve(2, start_date2, end_date2)
 
-      proc {hotel.reserve(1, start_date3, end_date3)}.must_raise Exception
+      20.times do
+        hotel.reserve(room, start_date, end_date)
+        room += 1
+      end
+
+      proc {hotel.reserve(1, start_date2, end_date2)}.must_raise Exception
     end
   end
 
@@ -111,18 +120,16 @@ describe "Hotel class" do
     end
 
     it "returns an empty array if all rooms are booked" do
-      start_date = Date.parse("2018-3-6")
-      end_date = Date.parse("2018-3-7")
-      start_date2 = Date.parse("2018-10-1")
-      end_date2 = Date.parse("2018-10-2")
+      start_date = Date.parse("2018-1-1")
+      end_date = Date.parse("2018-1-10")
+      start_date2 = Date.parse("2018-1-1")
+      end_date2 = Date.parse("2018-1-10")
       room = 1
       hotel = Hotel.new
 
       20.times do
         hotel.reserve(room, start_date, end_date)
         room += 1
-        start_date += 1
-        end_date += 1
       end
 
       hotel.available_rooms(start_date2, end_date2).must_equal []

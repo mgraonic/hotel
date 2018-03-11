@@ -8,7 +8,7 @@ describe "Describe Reservation Class" do
       start_date = Date.parse("2018-3-6")
       end_date = Date.parse("2018-3-10")
 
-      reservation = Reservation.new(5, start_date: start_date, end_date: end_date)
+      reservation = Reservation.new(5, start_date, end_date)
       reservation.must_be_kind_of Reservation
       reservation.start_date.must_be_kind_of Date
     end
@@ -19,7 +19,7 @@ describe "Describe Reservation Class" do
       start_date2 = Date.parse("2018-4-6")
       end_date2 = Date.parse("2018-4-10")
 
-      reservation = Reservation.new(5, start_date: start_date2, end_date: end_date2)
+      reservation = Reservation.new(5, start_date2, end_date2)
 
       reservation.must_be_kind_of Reservation
       # reservation.block_start_date.must_be_kind_of Date
@@ -56,7 +56,7 @@ describe "Describe Reservation Class" do
       start_date8 = Date.parse("2018-1-11")
       end_date8 = Date.parse("2018-1-15")
 
-      reservation = Reservation.new(1, start_date: existing_start_date, end_date: existing_end_date)
+      reservation = Reservation.new(1, existing_start_date, existing_end_date)
 
       reservation.overlap?(start_date1, end_date1).must_equal true
       reservation.overlap?(start_date2, end_date2).must_equal true
