@@ -15,22 +15,40 @@ class Hotel
     @blocks = []
   end
 
+  #optimization: turn @reservations into a hash where room
+  #numbers are keys and the value is an array of
+  #reservation objects
+
   def reserve_block(block_id, rooms_array, start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
     # if doesn't have reservation, go ahead
-    # ELSE raise exception??
+    # ELSE raise exception
     available_rooms = available_rooms(start_date, end_date)
 
     available_for_block = []
 
+    #check if reservation exists for given dates
     rooms_array.each do |room|
       if available_rooms.include?(room)
         available_for_block << room
       end
     end
 
+    #check if block with room numbers exists for given dates
+
+    # create block if rooms are neither reserved nor blocked
     block = Block.new(block_id, available_for_block, start_date, end_date)
     @blocks << block
+  end
+
+  def blocked_rooms(start_date, end_date)
+    start_date, end_date = check_date(start_date, end_date)
+    blocked_rooms = []
+
+    @rooms.each do |room|
+
+    end
+
   end
 
   def available_rooms(start_date, end_date)
