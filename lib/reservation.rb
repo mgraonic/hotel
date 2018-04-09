@@ -14,16 +14,8 @@ class Reservation
 
   def overlap?(start_date, end_date)
     if (!self.start_date.nil? && !self.end_date.nil?)
-      return ((self.start_date>= start_date && self.start_date <= end_date) || (self.end_date <= end_date && self.end_date > start_date)) || (self.start_date <= start_date && self.end_date >= end_date)
+      return !(end_date <= self.start_date || start_date >= self.end_date)
     end
-  end
-
-# duplicate code
-  def blocked?(start_date, end_date)
-    if (!self.block_start_date.nil? && !self.block_end_date.nil?)
-      return ((self.block_start_date>= start_date && self.block_start_date <= end_date) || (self.block_end_date <= end_date && self.block_end_date > start_date)) || (self.block_start_date <= start_date && self.block_end_date >= end_date)
-    end
-
   end
 
   def length_of_stay
