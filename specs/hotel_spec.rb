@@ -35,17 +35,17 @@ describe "Hotel class" do
   end
 
   describe "reserve_block method" do
-    it "create a block of rooms" do
-      start_date = "2018-1-1"
-      end_date = "2018-1-10"
-      rooms = [1, 2, 3, 5, 8]
-      hotel = Hotel.new
-
-      hotel.reserve_block(rooms, start_date, end_date)
-
-      hotel.blocked_rooms.length.must_equal 5
-      hotel.blocked_rooms.first.start_date.must_be_kind_of Date
-    end
+    # it "create a block of rooms" do
+    #   start_date = "2018-1-1"
+    #   end_date = "2018-1-10"
+    #   rooms = [1, 2, 3, 5, 8]
+    #   hotel = Hotel.new
+    #
+    #   hotel.reserve_block(rooms, start_date, end_date)
+    #
+    #   hotel.blocked_rooms.length.must_equal 5
+    #   hotel.blocked_rooms.first.start_date.must_be_kind_of Date
+    # end
 
     it "check whether block has rooms available" do
 

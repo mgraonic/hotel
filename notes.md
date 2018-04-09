@@ -9,6 +9,7 @@
 <!-- - As an administrator, I can reserve an available room for a given date range
 
 ### CONSTRAINTS
+
 ### Wave 1
 <!-- - The hotel has 20 rooms, and they are numbered 1 through 20
 - Every room is identical, and a room always costs $200/night

@@ -8,7 +8,7 @@ describe "Describe Reservation Class" do
       start_date = Date.parse("2018-3-6")
       end_date = Date.parse("2018-3-10")
 
-      reservation = Reservation.new(5, start_date, end_date)
+      reservation = Reservation.new(room: 5, start_date: start_date, end_date: end_date)
       reservation.must_be_kind_of Reservation
       reservation.start_date.must_be_kind_of Date
     end
@@ -40,8 +40,7 @@ describe "Describe Reservation Class" do
       start_date7 = Date.parse("2017-12-25")
       end_date7 = Date.parse("2018-1-15")
 
-      reservation = Reservation.new(1, existing_start_date, existing_end_date)
-
+      reservation = Reservation.new(:room => 1, :start_date => existing_start_date, :end_date => existing_end_date)
       reservation.overlap?(start_date1, end_date1).must_equal true
       reservation.overlap?(start_date2, end_date2).must_equal true
       reservation.overlap?(start_date3, end_date3).must_equal true
@@ -60,7 +59,7 @@ describe "Describe Reservation Class" do
       start_date2 = Date.parse("2018-1-11")
       end_date2 = Date.parse("2018-1-15")
 
-      reservation = Reservation.new(1, existing_start_date, existing_end_date)
+      reservation = Reservation.new(room: 1, start_date: existing_start_date, end_date: existing_end_date)
 
       reservation.overlap?(start_date1, end_date1).must_equal false
       reservation.overlap?(start_date2, end_date2).must_equal false
@@ -73,8 +72,8 @@ describe "Describe Reservation Class" do
       start_date = "2018-3-10"
       start_date_2 = "2018-3-6"
 
-      end_before_start = Reservation.new(5, start_date, end_date)
-      start_same_as_end = Reservation.new(5, start_date_2, end_date)
+      end_before_start = Reservation.new(room: 5, start_date: start_date, end_date: end_date)
+      start_same_as_end = Reservation.new(room: 5, start_date: start_date, end_date: end_date)
 
       proc{ start_before_end.check_date }.must_raise StandardError
       proc{ start_same_as_end.check_date }.must_raise StandardError
@@ -85,14 +84,14 @@ describe "Describe Reservation Class" do
     it "calculates cost for length of stay" do
       start_date = Date.parse("2018-3-6")
       end_date = Date.parse("2018-3-10")
-      reservation = Reservation.new(5, start_date, end_date)
+      reservation = Reservation.new(room: 5, start_date: start_date, end_date: end_date)
       reservation.cost.must_equal 800
     end
 
     it "does not charge for last day" do
       start_date = Date.parse("2018-3-6")
       end_date = Date.parse("2018-3-7")
-      reservation = Reservation.new(5, start_date, end_date)
+      reservation = Reservation.new(room: 5, start_date: start_date, end_date: end_date)
       reservation.cost.must_equal 200
     end
   end

@@ -44,11 +44,8 @@ class Hotel
   def blocked_rooms(start_date, end_date)
     start_date, end_date = check_date(start_date, end_date)
     blocked_rooms = []
-
     @rooms.each do |room|
-
     end
-
   end
 
   def available_rooms(start_date, end_date)
@@ -63,7 +60,7 @@ class Hotel
 
     @rooms.each do |room|
       room_id = room
-      #change rez structure to hash within room
+      #change rez structure to hash with room
       # as key and rez array as value
       res_with_room_id = @reservations.select {|reservation| reservation.room == room_id}
 
@@ -94,9 +91,9 @@ class Hotel
     # rooms = self.available_rooms(start_date, end_date)
     all_rooms = ROOMS
     available_rooms = available_rooms(start_date, end_date)
-
+    args = {room: room, start_date: start_date, end_date: end_date}
     if available_rooms.include?(room)
-      reservation = Reservation.new(room, start_date, end_date)
+      reservation = Reservation.new(args)
       @reservations << reservation
       return reservation
     else

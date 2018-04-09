@@ -6,10 +6,10 @@ class Reservation
   attr_reader :room, :start_date, :end_date
   COST = 200
 
-  def initialize(room, start_date, end_date)
-    @room = room
-    @start_date = start_date
-    @end_date = end_date
+  def initialize(args)
+    @room = args[:room]
+    @start_date = args[:start_date]
+    @end_date = args[:end_date]
   end
 
   def overlap?(start_date, end_date)
@@ -18,6 +18,7 @@ class Reservation
     end
   end
 
+# duplicate code
   def blocked?(start_date, end_date)
     if (!self.block_start_date.nil? && !self.block_end_date.nil?)
       return ((self.block_start_date>= start_date && self.block_start_date <= end_date) || (self.block_end_date <= end_date && self.block_end_date > start_date)) || (self.block_start_date <= start_date && self.block_end_date >= end_date)
